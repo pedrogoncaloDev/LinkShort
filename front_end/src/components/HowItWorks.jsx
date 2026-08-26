@@ -7,12 +7,12 @@ const STEPS = [
   {
     num: '02',
     title: 'Personalize (se quiser)',
-    desc: 'Defina um alias próprio, uma data de expiração, ou deixe no automático.',
+    desc: 'Defina uma data de expiração, ou deixe no automático.',
   },
   {
     num: '03',
     title: 'Compartilhe',
-    desc: 'Copie o link curto, gere um QR Code, ou acompanhe os cliques em tempo real.',
+    desc: 'Copie o link curto e compartilhe onde quiser.',
   },
 ]
 
