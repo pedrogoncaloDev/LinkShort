@@ -18,10 +18,8 @@ src/
   index.css                → todos os estilos (tokens de cor/tipografia no topo)
   components/
     Navbar.jsx              → logo + abas Encurtar / Meus Links
-    Hero.jsx                → headline, input de encurtar, animação de assinatura
-    StatsStrip.jsx          → faixa de números de prova social
+    Hero.jsx                → headline, input de encurtar, animação de assinatural
     HowItWorks.jsx          → 3 passos
-    Features.jsx            → grid de recursos
     LinksTable.jsx          → prévia da tabela "Meus Links"
     Footer.jsx
 ```
