@@ -100,10 +100,6 @@ function ShrinkDemo() {
 
       <div className="demo-meta">
         <div>
-          <div className="num">0.4s</div>
-          <div className="lbl">tempo médio pra encurtar</div>
-        </div>
-        <div>
           <div className="num">86%</div>
           <div className="lbl">menor que o original</div>
         </div>
