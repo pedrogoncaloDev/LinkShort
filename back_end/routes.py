@@ -1,7 +1,8 @@
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Request
 from fastapi.responses import RedirectResponse
 
 from config import BACKEND_URL, FRONTEND_URL
+from rate_limit import limiter
 from repositories.link_repository import LinkRepository
 from schemas import LinkInput
 from services.link_service import LinkService
@@ -11,12 +12,16 @@ link_service = LinkService(LinkRepository())
 
 
 @router.post("/shorten")
-def shorten_link(dados: LinkInput):
+@limiter.limit("10/minute")
+def shorten_link(request: Request, dados: LinkInput):
     if not dados.url:
         raise HTTPException(status_code=400, detail="URL não pode ser vazia")
 
-    codigo = link_service.shorten(dados.url)
-    return {"shortened_url": f"{BACKEND_URL}/{codigo}"}
+    link = link_service.shorten(dados.url, dados.expires_in_minutes)
+    return {
+        "shortened_url": f"{BACKEND_URL}/{link.codigo}",
+        "expires_at": link.expires_at.isoformat(),
+    }
 
 
 @router.get("/{codigo}")

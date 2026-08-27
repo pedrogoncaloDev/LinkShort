@@ -1,7 +1,13 @@
 import uuid
-from typing import Optional
+from datetime import datetime
+from typing import NamedTuple, Optional
 
 from repositories.link_repository import LinkRepository
+
+
+class ShortenedLink(NamedTuple):
+    codigo: str
+    expires_at: datetime
 
 
 class LinkService:
@@ -9,10 +15,15 @@ class LinkService:
         self._repository = repository
 
 
-    def shorten(self, url: str) -> str:
+    def shorten(self, url: str, expires_in_minutes: int) -> ShortenedLink:
+        existing = self._repository.find_active_by_url(url)
+        if existing is not None:
+            codigo, expires_at = existing
+            return ShortenedLink(codigo, expires_at)
+
         codigo = self._generate_unique_code()
-        self._repository.insert(codigo, url)
-        return codigo
+        expires_at = self._repository.insert(codigo, url, expires_in_minutes)
+        return ShortenedLink(codigo, expires_at)
 
 
     def resolve(self, codigo: str) -> Optional[str]:

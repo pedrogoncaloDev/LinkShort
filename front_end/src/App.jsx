@@ -15,12 +15,25 @@ function stripProtocol(str) {
   return str.replace(/^https?:\/\/(www\.)?/, '')
 }
 
+function formatDateTime(isoString) {
+  return new Date(isoString).toLocaleString('pt-BR', {
+    day: '2-digit',
+    month: 'short',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+  })
+}
+
 export default function App() {
   const [activeTab, setActiveTab] = useState('encurtar')
   const [links, setLinks] = useState(() => getMyLinks())
 
-  const handleShorten = async (originalUrl) => {
-    const { shortened_url: shortUrl } = await shortenUrl(originalUrl)
+  const handleShorten = async (originalUrl, expiresInMinutes) => {
+    const { shortened_url: shortUrl, expires_at: expiresAt } = await shortenUrl(
+      originalUrl,
+      expiresInMinutes
+    )
 
     const newLink = {
       short: stripProtocol(shortUrl),
@@ -31,6 +44,7 @@ export default function App() {
         month: 'short',
         year: 'numeric',
       }),
+      expiresAt: formatDateTime(expiresAt),
     }
     setLinks(addMyLink(newLink))
     return newLink

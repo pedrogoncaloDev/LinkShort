@@ -40,6 +40,7 @@ export default function MyLinks({ links }) {
               <div>Link curto</div>
               <div>Destino</div>
               <div>Criado em</div>
+              <div>Expira em</div>
               <div></div>
             </div>
 
@@ -56,6 +57,7 @@ export default function MyLinks({ links }) {
                 </div>
                 <div className="original">{link.original}</div>
                 <div className="date">{link.date}</div>
+                <div className="date">{link.expiresAt || '—'}</div>
                 <div
                   className="copy-btn"
                   onClick={() => handleCopy(link)}
