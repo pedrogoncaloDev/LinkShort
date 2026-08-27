@@ -16,4 +16,4 @@ COPY . .
 EXPOSE 8000
 EXPOSE 5678
 
-CMD ["sh", "-c", "alembic upgrade head && python main.py"]
+CMD ["sh", "-c", "alembic upgrade head && python -X frozen_modules=off main.py"]

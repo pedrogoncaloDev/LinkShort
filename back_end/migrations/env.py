@@ -5,7 +5,7 @@ from sqlalchemy import pool
 
 from alembic import context
 
-from utils import load_infos_ini
+from config import DB_HOST, DB_NAME, DB_PASSWORD, DB_PORT, DB_USER
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
@@ -20,11 +20,7 @@ target_metadata = None
 
 
 def get_url() -> str:
-    conn_infos = load_infos_ini("link_shortener", "database.ini")
-    return (
-        f"postgresql+psycopg2://{conn_infos['user']}:{conn_infos['password']}"
-        f"@{conn_infos['host']}:{conn_infos['port']}/{conn_infos['dbname']}"
-    )
+    return f"postgresql+psycopg2://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
 
 
 config.set_main_option("sqlalchemy.url", get_url())

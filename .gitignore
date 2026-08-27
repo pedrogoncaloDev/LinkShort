@@ -1,6 +1,5 @@
 # back_end
-back_end/.venv
-back_end/database.ini
+back_end/venv
 **/__pycache__
 
 # front_end
@@ -9,7 +8,7 @@ front_end/node_modules
 # root
 .env
 
-# vscode (versionamos launch.json/tasks.json de propósito)
+# vscode (versionei launch.json de propósito)
 .vscode/*
 !.vscode/launch.json
-!.vscode/tasks.json
+!.vscode/settings.json

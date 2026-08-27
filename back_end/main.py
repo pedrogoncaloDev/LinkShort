@@ -1,3 +1,5 @@
+import os
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -18,5 +20,19 @@ app.include_router(router)
 
 
 if __name__ == "__main__":
+    if os.getenv("DEBUG") == "1":
+        import debugpy
+
+        debug_host = os.getenv("DEBUG_HOST", "0.0.0.0")
+        debug_port = int(os.getenv("DEBUG_PORT", "5678"))
+        debugpy.listen((debug_host, debug_port))
+        print(f"[debugpy] Aguardando conexão do debugger em {debug_host}:{debug_port}...")
+
+        # Por padrão não bloqueia: o servidor sobe normalmente e o debugger
+        # pode anexar a qualquer momento. Ligue DEBUG_WAIT_FOR_CLIENT=true
+        # se precisar pausar breakpoints logo na inicialização.
+        if os.getenv("DEBUG_WAIT_FOR_CLIENT", "false").lower() == "true":
+            debugpy.wait_for_client()
+
     import uvicorn
     uvicorn.run("main:app", host=BACKEND_HOST, port=BACKEND_PORT)

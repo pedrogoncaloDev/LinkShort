@@ -4,12 +4,12 @@ services:
     container_name: linkshortener-db
     restart: unless-stopped
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: link_shortener
+      POSTGRES_USER: ${DB_USER:-postgres}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-postgres}
+      POSTGRES_DB: ${DB_NAME:-link_shortener}
     ports:
       # 5434 no host para não colidir com um Postgres local já instalado na 5432/5433
-      - "5434:5432"
+      - "${DB_PORT:-5434}:5432"
     volumes:
       - db_data:/var/lib/postgresql/data
     healthcheck:
@@ -31,11 +31,22 @@ services:
       BACKEND_URL: ${BACKEND_URL:-http://localhost:8000}
       FRONTEND_URL: ${FRONTEND_URL:-http://localhost:8080}
       ALLOWED_ORIGINS: ${ALLOWED_ORIGINS:-http://localhost:8080}
+      # host/porta internos da rede do Docker — não confundir com DB_PORT do
+      # .env, que é a porta publicada no host (usada fora do container)
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_NAME: ${DB_NAME:-link_shortener}
+      DB_USER: ${DB_USER:-postgres}
+      DB_PASSWORD: ${DB_PASSWORD:-postgres}
+      DEBUG: ${DEBUG:-0}
+      DEBUG_HOST: ${DEBUG_HOST:-0.0.0.0}
+      DEBUG_PORT: ${DEBUG_PORT:-5678}
+      DEBUG_WAIT_FOR_CLIENT: ${DEBUG_WAIT_FOR_CLIENT:-false}
     ports:
       - "8000:8000"
+      - "${DEBUG_PORT:-5678}:${DEBUG_PORT:-5678}"
     volumes:
       - ./back_end:/app
-      - ./back_end/database.docker.ini:/app/database.ini:ro
 
   frontend:
     build: ./front_end

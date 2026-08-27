@@ -8,9 +8,14 @@
       "program": "${workspaceFolder}/back_end/main.py",
       "cwd": "${workspaceFolder}/back_end",
       "console": "integratedTerminal",
-      "justMyCode": true
+      "justMyCode": true,
+      // Carrega DB_NAME/DB_USER/DB_PASSWORD/DB_PORT do .env da raiz — sem
+      // isso o processo cai nos defaults hardcoded do config.py
+      "envFile": "${workspaceFolder}/.env"
     },
     {
+      // Requer o container 'backend' rodando com DEBUG=1 no .env
+      // (docker compose up -d --build backend)
       "name": "Backend: Attach ao Docker",
       "type": "debugpy",
       "request": "attach",
@@ -24,8 +29,7 @@
           "remoteRoot": "/app"
         }
       ],
-      "justMyCode": true,
-      "preLaunchTask": "docker-compose: up (debug)"
+      "justMyCode": true
     },
     {
       "name": "Frontend: Debug (Chrome)",

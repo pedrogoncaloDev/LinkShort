@@ -1,8 +1,13 @@
 import psycopg2
 
-from utils import load_infos_ini
+from config import DB_HOST, DB_NAME, DB_PASSWORD, DB_PORT, DB_USER
 
 
-def get_connection(section: str):
-    conn_infos = load_infos_ini(section, "database.ini")
-    return psycopg2.connect(**conn_infos)
+def get_connection():
+    return psycopg2.connect(
+        host=DB_HOST,
+        port=DB_PORT,
+        dbname=DB_NAME,
+        user=DB_USER,
+        password=DB_PASSWORD,
+    )

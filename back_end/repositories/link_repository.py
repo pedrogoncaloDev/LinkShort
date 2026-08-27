@@ -12,7 +12,7 @@ class LinkRepository:
         conn = None
         cur = None
         try:
-            conn = get_connection("link_shortener")
+            conn = get_connection()
             cur = conn.cursor()
             cur.execute("""
                 INSERT INTO links (url_original, codigo_encurtado, data_criacao, data_expiracao)
@@ -30,7 +30,7 @@ class LinkRepository:
         conn = None
         cur = None
         try:
-            conn = get_connection("link_shortener")
+            conn = get_connection()
             cur = conn.cursor()
             cur.execute("SELECT 1 FROM links WHERE codigo_encurtado = %s", (codigo,))
             return cur.fetchone() is not None
@@ -45,7 +45,7 @@ class LinkRepository:
         conn = None
         cur = None
         try:
-            conn = get_connection("link_shortener")
+            conn = get_connection()
             cur = conn.cursor()
             cur.execute("SELECT url_original FROM links WHERE codigo_encurtado = %s", (codigo,))
             row = cur.fetchone()
