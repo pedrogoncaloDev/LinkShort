@@ -1,9 +1,13 @@
 # back_end
 back_end/venv
+back_end/.pytest_cache
+back_end/.coverage
 **/__pycache__
 
 # front_end
 front_end/node_modules
+front_end/dist
+front_end/coverage
 
 # root
 .env

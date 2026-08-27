@@ -24,6 +24,13 @@ def shorten_link(request: Request, dados: LinkInput):
     }
 
 
+@router.get("/health")
+def health_check():
+    return {"status": "ok"}
+
+
+# Precisa vir DEPOIS de /health: rotas são casadas na ordem de registro, e
+# "/{codigo}" combinaria com "/health" (codigo="health") se viesse antes.
 @router.get("/{codigo}")
 def redirecionar(codigo: str):
     url = link_service.resolve(codigo)

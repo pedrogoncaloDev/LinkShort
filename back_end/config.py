@@ -19,3 +19,8 @@ DB_PORT = int(os.getenv("DB_PORT", "5434"))
 DB_NAME = os.getenv("DB_NAME", "link_shortener")
 DB_USER = os.getenv("DB_USER", "postgres")
 DB_PASSWORD = os.getenv("DB_PASSWORD", "postgres")
+
+# Em produção (Render + Neon), a DATABASE_URL vem pronta do provedor —
+# já inclui host, credenciais e "?sslmode=require". Quando presente, tem
+# prioridade sobre as variáveis DB_* acima (usadas em dev/Docker local).
+DATABASE_URL = os.getenv("DATABASE_URL")

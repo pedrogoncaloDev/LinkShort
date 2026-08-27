@@ -1,0 +1,31 @@
+# Blueprint do Render — https://render.com/docs/blueprint-spec
+# Cria o web service do backend a partir do Dockerfile já usado em dev.
+# As variáveis marcadas "sync: false" precisam ser preenchidas manualmente
+# no dashboard do Render (não ficam no repositório).
+services:
+  - type: web
+    name: linkshortener-backend
+    runtime: docker
+    dockerfilePath: ./back_end/Dockerfile
+    dockerContext: ./back_end
+    plan: free
+    healthCheckPath: /health
+    envVars:
+      - key: BACKEND_HOST
+        value: "0.0.0.0"
+      # Neon fornece a connection string pronta (com sslmode=require) —
+      # cole em Environment > DATABASE_URL no dashboard do Render.
+      - key: DATABASE_URL
+        sync: false
+      # Domínio público do backend no Render, ex.: https://linkshortener-backend.onrender.com
+      - key: BACKEND_URL
+        sync: false
+      # Domínio do frontend na Vercel, usado no redirect de fallback
+      - key: FRONTEND_URL
+        sync: false
+      # Mesmo domínio da Vercel, usado pelo CORS
+      - key: ALLOWED_ORIGINS
+        sync: false
+      # DEBUG não é definido aqui de propósito — em produção deve ficar
+      # desligado (o padrão do código já é "desligado" na ausência da
+      # variável). Nunca ligue debugpy num serviço exposto à internet.
