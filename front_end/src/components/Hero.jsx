@@ -4,6 +4,7 @@ export default function Hero({ onShorten }) {
   const [url, setUrl] = useState('')
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [error, setError] = useState(null)
+  const [result, setResult] = useState(null)
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -11,14 +12,20 @@ export default function Hero({ onShorten }) {
 
     setIsSubmitting(true)
     setError(null)
+    setResult(null)
     try {
-      await onShorten(url.trim())
+      const newLink = await onShorten(url.trim())
       setUrl('')
+      setResult(newLink)
     } catch (err) {
       setError(err.message)
     } finally {
       setIsSubmitting(false)
     }
+  }
+
+  const handleCopy = () => {
+    if (result) navigator.clipboard?.writeText(result.shortUrl)
   }
 
   return (
@@ -62,6 +69,22 @@ export default function Hero({ onShorten }) {
             <span className="dot"></span> Gratuito
           </span>
         </div>
+
+        {result && (
+          <div className="shorten-result">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
+              <path d="M9 17H7A5 5 0 0 1 7 7h2" />
+              <path d="M15 7h2a5 5 0 1 1 0 10h-2" />
+              <line x1="8" y1="12" x2="16" y2="12" />
+            </svg>
+            <a href={result.shortUrl} target="_blank" rel="noreferrer">
+              {result.short}
+            </a>
+            <button type="button" className="copy-btn" onClick={handleCopy} title="Copiar link">
+              ⧉
+            </button>
+          </div>
+        )}
       </div>
 
       <ShrinkDemo />
@@ -96,13 +119,6 @@ function ShrinkDemo() {
           <line x1="8" y1="12" x2="16" y2="12" />
         </svg>
         <span>lnk.sh/x7F2a</span>
-      </div>
-
-      <div className="demo-meta">
-        <div>
-          <div className="num">86%</div>
-          <div className="lbl">menor que o original</div>
-        </div>
       </div>
     </div>
   )

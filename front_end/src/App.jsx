@@ -33,6 +33,7 @@ export default function App() {
       }),
     }
     setLinks(addMyLink(newLink))
+    return newLink
   }
 
   return (

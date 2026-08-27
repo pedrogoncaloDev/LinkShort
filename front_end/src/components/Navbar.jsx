@@ -26,8 +26,6 @@ export default function Navbar({ activeTab, onTabChange }) {
           Meus Links
         </div>
       </div>
-
-      <div className="navicons">🌙</div>
     </nav>
   )
 }

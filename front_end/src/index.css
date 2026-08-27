@@ -99,7 +99,7 @@ a {
 .hero {
   max-width: 1180px;
   margin: 0 auto;
-  padding: 56px 32px 0;
+  padding: 20px 32px 0;
   display: grid;
   grid-template-columns: 1.05fr 0.95fr;
   gap: 60px;
@@ -214,6 +214,30 @@ h1 span {
   height: 5px;
   border-radius: 50%;
   background: var(--mint);
+}
+
+.shorten-result {
+  margin-top: 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--mint-dim);
+  border: 1px solid rgba(62, 207, 142, 0.35);
+  border-radius: 10px;
+  padding: 12px 14px;
+  color: var(--mint);
+  max-width: 460px;
+}
+.shorten-result a {
+  flex: 1;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13.5px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.shorten-result .copy-btn {
+  flex-shrink: 0;
 }
 
 /* SIGNATURE ANIMATION (demo) */
@@ -420,7 +444,7 @@ h1 span {
 .section {
   max-width: 1180px;
   margin: 0 auto;
-  padding: 96px 32px 0;
+  padding: 50px 32px 0;
 }
 .section-head {
   max-width: 520px;
@@ -433,6 +457,9 @@ h1 span {
   letter-spacing: 0.06em;
   text-transform: uppercase;
   margin-bottom: 10px;
+}
+.section-my-links{
+  padding-top: 20px;
 }
 .section h2 {
   font-family: 'Space Grotesk', sans-serif;
@@ -547,6 +574,48 @@ h1 span {
   color: var(--text-faint);
   font-size: 13.5px;
 }
+.table-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 24px;
+  border-top: 1px solid var(--border);
+}
+.table-footer-info {
+  color: var(--text-faint);
+  font-size: 12.5px;
+}
+.pagination {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.pagination-info {
+  color: var(--text-muted);
+  font-size: 13px;
+  font-family: 'JetBrains Mono', monospace;
+}
+.page-btn {
+  width: 28px;
+  height: 28px;
+  border-radius: 7px;
+  background: var(--elevated-2);
+  border: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-muted);
+  cursor: pointer;
+  font-size: 15px;
+}
+.page-btn:hover:not(:disabled) {
+  border-color: var(--border-strong);
+  color: var(--text);
+}
+.page-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
 .copy-btn {
   width: 28px;
   height: 28px;
@@ -570,7 +639,7 @@ footer {
   padding: 28px 32px;
   border-top: 1px solid var(--border);
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   color: var(--text-faint);
   font-size: 13px;
 }

@@ -1,10 +1,21 @@
+import { useState } from 'react'
+
+const PAGE_SIZE = 5
+
 export default function MyLinks({ links }) {
+  const [page, setPage] = useState(1)
+
+  const totalPages = Math.max(1, Math.ceil(links.length / PAGE_SIZE))
+  const currentPage = Math.min(page, totalPages)
+  const start = (currentPage - 1) * PAGE_SIZE
+  const pageLinks = links.slice(start, start + PAGE_SIZE)
+
   const handleCopy = (link) => {
     navigator.clipboard?.writeText(link.shortUrl || `https://${link.short}`)
   }
 
   return (
-    <section className="section">
+    <section className="section section-my-links">
       <div className="section-head">
         <div className="section-eyebrow">Meus Links</div>
         <h2>Tudo organizado num só lugar</h2>
@@ -32,7 +43,7 @@ export default function MyLinks({ links }) {
               <div></div>
             </div>
 
-            {links.map((link) => (
+            {pageLinks.map((link) => (
               <div className="row" key={link.short}>
                 <div className="short">
                   {link.shortUrl ? (
@@ -54,6 +65,37 @@ export default function MyLinks({ links }) {
                 </div>
               </div>
             ))}
+
+            {totalPages > 1 && (
+              <div className="table-footer">
+                <span className="table-footer-info">
+                  {start + 1}–{Math.min(start + PAGE_SIZE, links.length)} de {links.length}
+                </span>
+                <div className="pagination">
+                  <button
+                    type="button"
+                    className="page-btn"
+                    disabled={currentPage === 1}
+                    onClick={() => setPage(currentPage - 1)}
+                    aria-label="Página anterior"
+                  >
+                    ‹
+                  </button>
+                  <span className="pagination-info">
+                    {currentPage} / {totalPages}
+                  </span>
+                  <button
+                    type="button"
+                    className="page-btn"
+                    disabled={currentPage === totalPages}
+                    onClick={() => setPage(currentPage + 1)}
+                    aria-label="Próxima página"
+                  >
+                    ›
+                  </button>
+                </div>
+              </div>
+            )}
           </>
         )}
       </div>
