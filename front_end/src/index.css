@@ -145,6 +145,11 @@ h1 span {
   margin-bottom: 32px;
 }
 
+/* quebras de linha que só aparecem no mobile (ver media queries) */
+.br-mobile {
+  display: none;
+}
+
 .shorten-card {
   background: var(--surface);
   border: 1px solid var(--border);
@@ -696,6 +701,10 @@ footer {
   }
   h1 {
     font-size: 38px;
+    overflow-wrap: break-word;
+  }
+  .br-mobile {
+    display: inline;
   }
   .row {
     grid-template-columns: 1fr 1fr;
@@ -703,5 +712,47 @@ footer {
   .row .original,
   .row .date {
     display: none;
+  }
+}
+
+@media (max-width: 640px) {
+  .navbar {
+    padding: 18px 20px;
+  }
+  /* no mobile fica só o ícone do logo */
+  .logo-text {
+    display: none;
+  }
+  .tab {
+    padding: 8px 13px;
+    white-space: nowrap;
+  }
+  .hero {
+    padding: 18px 20px 0;
+  }
+  .expiry-control,
+  .fine-print {
+    flex-wrap: wrap;
+  }
+}
+
+@media (max-width: 460px) {
+  h1 {
+    font-size: 30px;
+  }
+  .sub {
+    font-size: 15.5px;
+  }
+  .navbar {
+    padding: 16px;
+  }
+  .hero {
+    padding: 16px 16px 0;
+  }
+  .shorten-card {
+    flex-direction: column;
+  }
+  .btn-primary {
+    justify-content: center;
   }
 }

@@ -50,12 +50,14 @@ export default function Hero({ onShorten }) {
         </div>
 
         <h1>
-          Links longos ficam <span>curtos</span>. Em um clique.
+          Links longos ficam <span>curtos</span>.<br className="br-mobile" /> Em um
+          clique.
         </h1>
 
         <p className="sub">
-          Cole a URL, personalize se quiser, e compartilhe. Seus links ficam
-          organizados e rastreáveis num só lugar — sem enrolação.
+          Cole a URL, personalize se quiser, e compartilhe.
+          <br className="br-mobile" /> Seus links ficam organizados e rastreáveis
+          num só lugar — sem enrolação.
         </p>
 
         <form className="shorten-card" onSubmit={handleSubmit}>
