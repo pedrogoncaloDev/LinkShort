@@ -21,7 +21,7 @@ Encurtador de URLs full-stack: **FastAPI + PostgreSQL** no back-end, **React + V
 
 | Camada    | Tecnologias |
 |-----------|-------------|
-| Back-end  | Python 3.12, FastAPI, Uvicorn, Pydantic, `psycopg2` (SQL puro), `slowapi` |
+| Back-end  | Python 3.12, FastAPI, Uvicorn, Pydantic, `psycopg2` (SQL puro), `slowapi`, OpenAPI/Swagger (docs automática) |
 | Banco     | PostgreSQL 16, migrations com Alembic |
 | Front-end | React 18, Vite 5 |
 | Testes    | `pytest` + coverage (back-end), Vitest + Testing Library (front-end) |
@@ -47,7 +47,7 @@ routes.py          → HTTP: rotas, status codes, montagem da resposta
 ├── back_end/
 │   ├── main.py                  → cria o app FastAPI, middlewares (CORS, rate limit), debugpy opcional
 │   ├── routes.py                → /shorten, /health, /{codigo}
-│   ├── schemas.py               → validação de entrada (Pydantic) + limites de expiração
+│   ├── schemas.py               → modelos Pydantic de entrada/saída (OpenAPI) + limites de expiração
 │   ├── config.py                → variáveis de ambiente
 │   ├── rate_limit.py            → instância compartilhada do Limiter
 │   ├── services/link_service.py → lógica de encurtamento e resolução
@@ -85,11 +85,25 @@ routes.py          → HTTP: rotas, status codes, montagem da resposta
 
 Base URL local: `http://localhost:8000`
 
-### `POST /shorten`
+A documentação é gerada pelo FastAPI a partir do próprio código (schemas Pydantic + metadados das rotas em [`routes.py`](back_end/routes.py)). Com o back-end rodando:
 
-Cria (ou reaproveita) um link curto. Limitado a **10 req/min por IP**.
+| Recurso | URL local |
+|---------|-----------|
+| **Swagger UI** (testar no navegador) | http://localhost:8000/docs |
+| **ReDoc** | http://localhost:8000/redoc |
+| Especificação OpenAPI (JSON) | http://localhost:8000/openapi.json |
 
-**Request**
+### Endpoints
+
+| Método | Rota | Tag | Descrição |
+|--------|------|-----|-----------|
+| `POST` | `/shorten` | Links | Cria ou reaproveita um link curto. Rate limit: **10 req/min por IP**. |
+| `GET`  | `/{codigo}` | Links | Redireciona (`307`) para a URL original; cai no front-end (`FRONTEND_URL?codigo={codigo}`) se o código não existir ou estiver expirado. |
+| `GET`  | `/health` | Sistema | Health check — `{ "status": "ok" }`. |
+
+#### `POST /shorten` — exemplo
+
+Request (`expires_in_minutes` é opcional: padrão `10080` = 7 dias, mínimo `5`, máximo `43200` = 30 dias):
 
 ```json
 {
@@ -98,9 +112,7 @@ Cria (ou reaproveita) um link curto. Limitado a **10 req/min por IP**.
 }
 ```
 
-`expires_in_minutes` é opcional (padrão `10080` = 7 dias), mínimo `5`, máximo `43200` (30 dias).
-
-**Response `200`**
+Response `200`:
 
 ```json
 {
@@ -109,17 +121,7 @@ Cria (ou reaproveita) um link curto. Limitado a **10 req/min por IP**.
 }
 ```
 
-**Erros:** `400` URL vazia · `422` `expires_in_minutes` fora do intervalo · `429` rate limit excedido.
-
-### `GET /health`
-
-```json
-{ "status": "ok" }
-```
-
-### `GET /{codigo}`
-
-Redireciona (`307`) para a URL original. Se o código não existir ou estiver expirado, redireciona para `FRONTEND_URL?codigo={codigo}`.
+Erros: `400` URL vazia · `422` `expires_in_minutes` fora do intervalo · `429` rate limit excedido. O schema de cada resposta está detalhado no Swagger UI.
 
 ## Rodando localmente
 

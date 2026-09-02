@@ -10,7 +10,26 @@ from config import ALLOWED_ORIGINS, BACKEND_HOST, BACKEND_PORT
 from rate_limit import limiter
 from routes import router
 
-app = FastAPI()
+app = FastAPI(
+    title="LinkShortener API",
+    version="1.0.0",
+    description=(
+        "API do LinkShortener — encurtador de URLs.\n\n"
+        "- `POST /shorten` cria (ou reaproveita) um link curto com expiração configurável.\n"
+        "- `GET /{codigo}` redireciona para a URL original.\n"
+        "- `GET /health` health check.\n\n"
+        "Docs interativas: **/docs** (Swagger UI) e **/redoc** (ReDoc). "
+        "Especificação: **/openapi.json**."
+    ),
+    contact={
+        "name": "Pedro Gonçalo",
+        "url": "https://github.com/pedrogoncaloDev/LinkShortener",
+    },
+    openapi_tags=[
+        {"name": "Links", "description": "Criação e resolução de links curtos."},
+        {"name": "Sistema", "description": "Health check e monitoramento."},
+    ],
+)
 
 # Protege /shorten de abuso (bot martelando o endpoint pra inflar o banco).
 # Ver @limiter.limit em routes.py.
